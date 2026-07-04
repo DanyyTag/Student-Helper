@@ -1,3 +1,7 @@
+
+
+<img width="259" height="226" alt="SchoolHelper-removebg-preview" src="https://github.com/user-attachments/assets/4978d376-a4b4-4e19-bfdd-7f69120532bb" />
+
 Student Helper
 
 Student Helper is a web app built by a dyslexic student, for dyslexic students and everyone else.
