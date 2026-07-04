@@ -64,6 +64,16 @@ The free database sometimes takes a moment to respond on the first attempt.
 
 ---
 
+IEP integration
+
+Since the app never gives direct answers but only guides the student through reasoning, 
+it can be used as a compensatory or dispensatory tool depending on the national regulations, 
+the specific rules of your school, or the student's IEP (Individualized Education Program), 
+which is the personalized plan given to students with learning disabilities like dyslexia. 
+It helps students work independently without replacing the learning process.
+
+---
+
 About
 
 Built by a dyslexic student who wanted a tool that actually works the way dyslexic brains do.
