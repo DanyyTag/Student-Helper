@@ -19,7 +19,7 @@ firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
 auth = firebase.auth()
 db = firebase.database()
 
-st.set_page_config(page_title="StudyMate", page_icon="🧩", layout="centered")
+st.set_page_config(page_title="Student Helper", page_icon="🧩", layout="centered")
 
 st.markdown("""
 <style>
@@ -88,7 +88,7 @@ Rispondi sempre in italiano, in modo breve (massimo 4-5 righe).
 Se ti viene chiesto chi sei o come funzioni, rispondi onestamente che sei un tutor basato su intelligenza artificiale."""
 
 if st.session_state.utente is None:
-    st.title("🧩 StudyMate")
+    st.title("🧩 Student Helper")
 
     scheda = st.tabs(["Accedi", "Registrati", "Reset password"])
 
@@ -169,7 +169,7 @@ else:
             st.session_state.chat = []
             st.rerun()
 
-    st.title("🧩 StudyMate")
+    st.title("🧩 Student Helper")
     st.caption("Scegli un argomento, ottieni uno schema chiaro, poi fai domande: ti guido a ragionare, non ti do la soluzione pronta.")
 
     argomento = st.text_input("📚 Su quale argomento vuoi uno schema?", placeholder="Es: la fotosintesi, le frazioni, la Rivoluzione francese...")
