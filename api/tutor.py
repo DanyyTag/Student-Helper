@@ -52,7 +52,7 @@ If asked who you are, honestly say you are an AI-based tutor."""
                 from groq import Groq
                 client = Groq(api_key=api_key)
                 resp = client.chat.completions.create(
-                    model='llama-3.3-70b-versatile',
+                    model='llama3-70b-8192',
                     max_tokens=1000,
                     messages=[{'role': 'system', 'content': system}] + messages
                 )
