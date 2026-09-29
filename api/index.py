@@ -54,7 +54,7 @@ def call_ai(api_key, system, messages):
         return resp.content[0].text
     elif api_key.startswith('gsk_'):
         client = Groq(api_key=api_key)
-        resp = client.chat.completions.create(model='llama-3.1-8b-instant', max_tokens=1000, messages=[{'role': 'system', 'content': system}] + messages)
+        resp = client.chat.completions.create(model='openai/gpt-oss-20b', max_tokens=1000, messages=[{'role': 'system', 'content': system}] + messages)
         return resp.choices[0].message.content
     elif api_key.startswith('sk-'):
         client = OpenAI(api_key=api_key)
