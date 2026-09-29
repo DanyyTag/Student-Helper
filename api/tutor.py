@@ -49,7 +49,7 @@ Reply in English, max 4-5 lines."""
                 from groq import Groq
                 client = Groq(api_key=api_key)
                 resp = client.chat.completions.create(
-                    model='llama-3.3-70b-versatile',
+                    model='llama-3.1-8b-instant',
                     max_tokens=1000,
                     messages=[{'role': 'system', 'content': system}] + messages
                 )
