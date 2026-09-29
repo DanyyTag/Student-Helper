@@ -5,6 +5,7 @@ import json
 
 def handler(request):
     if request.method == 'OPTIONS':
+        from flask import Response
         return Response('', status=200, headers={
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -12,7 +13,7 @@ def handler(request):
         })
 
     try:
-        body = request.json()
+        body = request.get_json()
         question = body.get('question', '')
         schema = body.get('schema', '')
         history = body.get('history', [])
@@ -67,9 +68,19 @@ Reply in English, max 4-5 lines."""
             )
             text = resp.choices[0].message.content
         else:
-            return Response(json.dumps({'error': 'API key not recognized'}), status=400, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+            text = 'API key not recognized'
 
-        return Response(json.dumps({'result': text}), status=200, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+        from flask import Response as FlaskResponse
+        return FlaskResponse(
+            json.dumps({'result': text}),
+            status=200,
+            headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        )
 
     except Exception as e:
-        return Response(json.dumps({'error': str(e)}), status=500, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+        from flask import Response as FlaskResponse
+        return FlaskResponse(
+            json.dumps({'error': str(e)}),
+            status=500,
+            headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        )
