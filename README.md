@@ -40,7 +40,7 @@ pip install streamlit anthropic openai groq pyrebase4
 ```
 3. Run the app:
 ```
-python -m streamlit run app_final2.py
+python -m streamlit run app.py
 ```
 
 ---
