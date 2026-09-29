@@ -4,6 +4,8 @@
 
 Student Helper
 
+# Student Helper
+
 Student Helper is a web app built by a dyslexic student, for dyslexic students and everyone else.
 
 The idea is simple: instead of giving you the answer, it guides you to find it yourself. You pick a topic, get a clear and structured summary, then ask questions. The tutor responds with hints and guiding questions, never with direct solutions.
@@ -12,15 +14,15 @@ Designed with readability in mind, large text, short bullet points, clean layout
 
 ---
 
-Try it online
+## Try it online
 
-https://student-hel-per.streamlit.app/
+https://student-helper-rouge-five.vercel.app/
 
 No installation needed, just open the link and create an account.
 
 ---
 
-Features
+## Features
 
 1. Generates clear, structured topic summaries
 2. Socratic tutor that guides your thinking and never gives the answer away
@@ -31,21 +33,22 @@ Features
 
 ---
 
-Run it locally
+## Run it locally
 
 1. Clone the repository
 2. Install dependencies:
 ```
-pip install streamlit anthropic openai groq pyrebase4
+pip install flask anthropic openai groq
 ```
 3. Run the app:
 ```
-python -m streamlit run app.py
+flask --app api/index.py run
 ```
+4. Open your browser at http://localhost:5000
 
 ---
 
-Bug Reports
+## Bug Reports
 
 Found a bug? Open an issue on GitHub using the Issues tab at the top of this page.
 
@@ -60,25 +63,19 @@ The more detail you give, the faster it gets fixed. All reports are welcome, no 
 
 ---
 
-Note
+## Note
 
-If when logging in you get an error saying the email or password are wrong but you are sure they are correct, 
-just click the login button one more time. 
-The free database sometimes takes a moment to respond on the first attempt.
+If when logging in you get an error saying the email or password are wrong but you are sure they are correct, just click the login button one more time. The free database sometimes takes a moment to respond on the first attempt.
 
 ---
 
-IEP integration
+## IEP Integration
 
-Since the app never gives direct answers but only guides the student through reasoning, 
-it can be used as a compensatory or dispensatory tool depending on the national regulations, 
-the specific rules of your school, or the student's IEP (Individualized Education Program), 
-which is the personalized plan given to students with learning disabilities like dyslexia. 
-It helps students work independently without replacing the learning process.
+Since the app never gives direct answers but only guides the student through reasoning, it can be used as a compensatory or dispensatory tool depending on the national regulations, the specific rules of your school, or the student's IEP (Individualized Education Program), which is the personalized plan given to students with learning disabilities like dyslexia. It helps students work independently without replacing the learning process.
 
 ---
 
-About
+## About
 
 Built by a dyslexic student who wanted a tool that actually works the way dyslexic brains do.
 
