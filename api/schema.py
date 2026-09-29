@@ -3,16 +3,9 @@ from anthropic import Anthropic
 from openai import OpenAI
 import json
 
-def allow_cors(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-    return response
-
 def handler(request):
-    from http import HTTPStatus
-    
     if request.method == 'OPTIONS':
+        from flask import Response
         return Response('', status=200, headers={
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -20,7 +13,7 @@ def handler(request):
         })
 
     try:
-        body = request.json()
+        body = request.get_json()
         topic = body.get('topic', '')
         api_key = body.get('api_key', '')
         lang = body.get('lang', 'it')
@@ -76,9 +69,19 @@ Go straight to the content, no introductions."""
             )
             text = resp.choices[0].message.content
         else:
-            return Response(json.dumps({'error': 'API key not recognized'}), status=400, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+            text = 'API key not recognized'
 
-        return Response(json.dumps({'result': text}), status=200, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+        from flask import Response as FlaskResponse
+        return FlaskResponse(
+            json.dumps({'result': text}),
+            status=200,
+            headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        )
 
     except Exception as e:
-        return Response(json.dumps({'error': str(e)}), status=500, headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'})
+        from flask import Response as FlaskResponse
+        return FlaskResponse(
+            json.dumps({'error': str(e)}),
+            status=500,
+            headers={'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        )
