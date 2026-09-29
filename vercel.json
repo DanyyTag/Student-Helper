@@ -1,12 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/*.py", "use": "@vercel/python" },
-    { "src": "public/**", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/api/schema", "dest": "/api/schema.py" },
-    { "src": "/api/tutor", "dest": "/api/tutor.py" },
-    { "src": "/(.*)", "dest": "/public/index.html" }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/public/index.html" }
   ]
 }
