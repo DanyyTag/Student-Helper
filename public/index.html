@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Student Helper</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2d3148;
+    --accent: #6c8eff;
+    --accent2: #a78bfa;
+    --text: #e8eaf6;
+    --text-muted: #8b90b8;
+    --success: #4ade80;
+    --error: #f87171;
+    --radius: 12px;
+    --font: 'Inter', 'Verdana', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 17px;
+    line-height: 1.7;
+    letter-spacing: 0.2px;
+    min-height: 100vh;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 260px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 100;
+  }
+  .sidebar-logo { font-size: 22px; font-weight: 600; color: var(--text); }
+  .lang-switch {
+    display: flex;
+    gap: 8px;
+  }
+  .lang-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  .lang-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .user-info {
+    margin-top: auto;
+    font-size: 14px;
+    color: var(--text-muted);
+    display: none;
+  }
+  .logout-btn {
+    margin-top: 8px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--error);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  .logout-btn:hover { background: rgba(248,113,113,0.1); }
+  .main {
+    margin-left: 260px;
+    padding: 48px 40px;
+    max-width: 860px;
+  }
+  h1 { font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+  .caption { color: var(--text-muted); font-size: 15px; margin-bottom: 36px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 15px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 6px; }
+  input[type="email"], input[type="password"], input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 15px;
+    font-family: var(--font);
+    margin-bottom: 14px;
+    outline: none;
+    transition: border 0.15s;
+  }
+  input:focus { border-color: var(--accent); }
+  .btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 14px;
+    display: none;
+  }
+  .alert.error { background: rgba(248,113,113,0.12); color: var(--error); border: 1px solid rgba(248,113,113,0.3); }
+  .alert.success { background: rgba(74,222,128,0.1); color: var(--success); border: 1px solid rgba(74,222,128,0.3); }
+  .alert.show { display: block; }
+  #app-section { display: none; }
+  .topic-row { display: flex; gap: 12px; margin-bottom: 24px; }
+  .topic-row input { flex: 1; margin: 0; }
+  .topic-row .btn { width: auto; padding: 12px 24px; white-space: nowrap; }
+  .schema-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+    line-height: 1.9;
+    display: none;
+  }
+  .schema-box h3 { font-size: 16px; color: var(--text-muted); margin-bottom: 16px; }
+  .schema-content { white-space: pre-wrap; font-size: 16px; }
+  .chat-box {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .msg {
+    max-width: 80%;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .msg.user {
+    background: var(--accent);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.assistant {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+  .chat-input-row { display: none; gap: 12px; }
+  .chat-input-row input { flex: 1; margin: 0; }
+  .chat-input-row .btn { width: auto; padding: 12px 20px; }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 700px) {
+    .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; flex-wrap: wrap; padding: 16px; }
+    .main { margin-left: 0; padding: 20px 16px; }
+    .user-info { margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-logo">🎓 Student Helper</div>
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('it')">Italiano</button>
+    <button class="lang-btn" onclick="setLang('en')">English</button>
+  </div>
+  <div class="user-info" id="user-info">
+    <span id="user-email"></span>
+    <button class="logout-btn" onclick="logout()" id="logout-btn">Esci</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <div id="auth-section">
+    <h1>🎓 Student Helper</h1>
+    <p class="caption" id="caption-text">Scegli un argomento, ottieni uno schema chiaro, poi fai domande: ti guido a ragionare, non ti do la soluzione pronta.</p>
+    <div class="card">
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('login')" id="tab-login">Accedi</div>
+        <div class="tab" onclick="switchTab('register')" id="tab-register">Registrati</div>
+        <div class="tab" onclick="switchTab('reset')" id="tab-reset">Reset password</div>
+      </div>
+
+      <div class="tab-panel active" id="panel-login">
+        <div class="alert error" id="login-error"></div>
+        <label id="label-email">Email</label>
+        <input type="email" id="login-email">
+        <label id="label-password">Password</label>
+        <input type="password" id="login-password">
+        <button class="btn" onclick="login()" id="login-btn"><span id="login-btn-text">Accedi</span></button>
+      </div>
+
+      <div class="tab-panel" id="panel-register">
+        <div class="alert error" id="reg-error"></div>
+        <div class="alert success" id="reg-success"></div>
+        <label>Email</label>
+        <input type="email" id="reg-email">
+        <label>Password</label>
+        <input type="password" id="reg-password">
+        <label id="label-apikey">La tua chiave API</label>
+        <input type="password" id="reg-apikey" placeholder="sk-ant-... / sk-... / gsk_...">
+        <button class="btn" onclick="register()" id="reg-btn"><span id="reg-btn-text">Registrati</span></button>
+      </div>
+
+      <div class="tab-panel" id="panel-reset">
+        <div class="alert error" id="reset-error"></div>
+        <div class="alert success" id="reset-success"></div>
+        <label>Email</label>
+        <input type="email" id="reset-email">
+        <button class="btn" onclick="resetPassword()" id="reset-btn"><span id="reset-btn-text">Invia email di reset</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="app-section">
+    <h1>🎓 Student Helper</h1>
+    <p class="caption" id="app-caption">Scegli un argomento, ottieni uno schema chiaro, poi fai domande: ti guido a ragionare, non ti do la soluzione pronta.</p>
+
+    <div class="topic-row">
+      <input type="text" id="topic-input" placeholder="Es: la fotosintesi, le frazioni, la Rivoluzione francese...">
+      <button class="btn" onclick="createSchema()" id="schema-btn"><span id="schema-btn-text">Crea schema</span></button>
+    </div>
+
+    <div class="schema-box" id="schema-box">
+      <h3 id="schema-title">🗂️ Il tuo schema</h3>
+      <div class="schema-content" id="schema-content"></div>
+    </div>
+
+    <div class="chat-box" id="chat-box"></div>
+    <div class="chat-input-row" id="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Scrivi qui la tua domanda..." onkeydown="if(event.key==='Enter') sendMessage()">
+      <button class="btn" onclick="sendMessage()" id="chat-btn"><span id="chat-btn-text">Invia</span></button>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCxFM0jRILM3KgAUxPA8G5O8M5vpege8AY",
+  authDomain: "student-helper-2026.firebaseapp.com",
+  databaseURL: "https://student-helper-2026-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "student-helper-2026",
+  storageBucket: "student-helper-2026.firebasestorage.app",
+  messagingSenderId: "517915471668",
+  appId: "1:517915471668:web:c788362c4b9a2c6fe57f61"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+let currentUser = null;
+let apiKey = null;
+let schema = null;
+let chatHistory = [];
+let lang = 'it';
+
+const T = {
+  it: {
+    caption: "Scegli un argomento, ottieni uno schema chiaro, poi fai domande: ti guido a ragionare, non ti do la soluzione pronta.",
+    login: "Accedi", register: "Registrati", reset: "Reset password",
+    loginBtn: "Accedi", registerBtn: "Registrati", resetBtn: "Invia email di reset",
+    logout: "Esci", apikey: "La tua chiave API",
+    schemaTitle: "🗂️ Il tuo schema", schemaBtn: "Crea schema",
+    chatPlaceholder: "Scrivi qui la tua domanda...", sendBtn: "Invia",
+    topicPlaceholder: "Es: la fotosintesi, le frazioni, la Rivoluzione francese...",
+    loginErr: "Email o password errati.", fillFields: "Compila tutti i campi.",
+    keyErr: "Formato chiave API non riconosciuto.",
+    regOk: "Account creato! Ora accedi.", regErr: "Errore. Email già in uso?",
+    resetOk: "Email inviata! Controlla la casella.", resetErr: "Email non trovata.",
+    loading: "Caricamento...", sending: "Invio..."
+  },
+  en: {
+    caption: "Choose a topic, get a clear summary, then ask questions: I'll guide your thinking, not give you the answer.",
+    login: "Login", register: "Sign up", reset: "Reset password",
+    loginBtn: "Login", registerBtn: "Sign up", resetBtn: "Send reset email",
+    logout: "Logout", apikey: "Your API key",
+    schemaTitle: "🗂️ Your summary", schemaBtn: "Create summary",
+    chatPlaceholder: "Type your question here...", sendBtn: "Send",
+    topicPlaceholder: "E.g.: photosynthesis, fractions, the French Revolution...",
+    loginErr: "Wrong email or password.", fillFields: "Please fill in all fields.",
+    keyErr: "Unrecognized API key format.",
+    regOk: "Account created! Now log in.", regErr: "Registration error. Email already in use?",
+    resetOk: "Email sent! Check your inbox.", resetErr: "Email not found.",
+    loading: "Loading...", sending: "Sending..."
+  }
+};
+
+window.setLang = function(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach((b, i) => b.classList.toggle('active', (i === 0 && l === 'it') || (i === 1 && l === 'en')));
+  const t = T[l];
+  document.getElementById('caption-text').textContent = t.caption;
+  document.getElementById('app-caption').textContent = t.caption;
+  document.getElementById('tab-login').textContent = t.login;
+  document.getElementById('tab-register').textContent = t.register;
+  document.getElementById('tab-reset').textContent = t.reset;
+  document.getElementById('login-btn-text').textContent = t.loginBtn;
+  document.getElementById('reg-btn-text').textContent = t.registerBtn;
+  document.getElementById('reset-btn-text').textContent = t.resetBtn;
+  document.getElementById('logout-btn').textContent = t.logout;
+  document.getElementById('label-apikey').textContent = t.apikey;
+  document.getElementById('schema-title').textContent = t.schemaTitle;
+  document.getElementById('schema-btn-text').textContent = t.schemaBtn;
+  document.getElementById('chat-input').placeholder = t.chatPlaceholder;
+  document.getElementById('chat-btn-text').textContent = t.sendBtn;
+  document.getElementById('topic-input').placeholder = t.topicPlaceholder;
+};
+
+window.switchTab = function(tab) {
+  ['login','register','reset'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t === tab);
+    document.getElementById('panel-'+t).classList.toggle('active', t === tab);
+  });
+};
+
+window.login = async function() {
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn-text');
+  if (!email || !password) { showAlert(errEl, T[lang].fillFields); return; }
+  btn.innerHTML = '<span class="spinner"></span>' + T[lang].loading;
+  document.getElementById('login-btn').disabled = true;
+  try {
+    await new Promise(r => setTimeout(r, 500));
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    currentUser = cred.user;
+    await loadApiKey();
+  } catch(e) {
+    await new Promise(r => setTimeout(r, 1500));
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      currentUser = cred.user;
+      await loadApiKey();
+    } catch(e2) {
+      showAlert(errEl, T[lang].loginErr);
+    }
+  } finally {
+    btn.textContent = T[lang].loginBtn;
+    document.getElementById('login-btn').disabled = false;
+  }
+};
+
+window.register = async function() {
+  const email = document.getElementById('reg-email').value;
+  const password = document.getElementById('reg-password').value;
+  const key = document.getElementById('reg-apikey').value;
+  const errEl = document.getElementById('reg-error');
+  const okEl = document.getElementById('reg-success');
+  const btn = document.getElementById('reg-btn-text');
+  if (!email || !password || !key) { showAlert(errEl, T[lang].fillFields); return; }
+  if (!key.startsWith('sk-ant-') && !key.startsWith('sk-') && !key.startsWith('gsk_')) { showAlert(errEl, T[lang].keyErr); return; }
+  btn.innerHTML = '<span class="spinner"></span>' + T[lang].loading;
+  document.getElementById('reg-btn').disabled = true;
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    await set(ref(db, 'utenti/' + cred.user.uid + '/api_key'), key);
+    showAlert(okEl, T[lang].regOk, true);
+    errEl.classList.remove('show');
+  } catch(e) {
+    showAlert(errEl, T[lang].regErr);
+  } finally {
+    btn.textContent = T[lang].registerBtn;
+    document.getElementById('reg-btn').disabled = false;
+  }
+};
+
+window.resetPassword = async function() {
+  const email = document.getElementById('reset-email').value;
+  const errEl = document.getElementById('reset-error');
+  const okEl = document.getElementById('reset-success');
+  const btn = document.getElementById('reset-btn-text');
+  if (!email) { showAlert(errEl, T[lang].fillFields); return; }
+  btn.innerHTML = '<span class="spinner"></span>' + T[lang].loading;
+  document.getElementById('reset-btn').disabled = true;
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showAlert(okEl, T[lang].resetOk, true);
+    errEl.classList.remove('show');
+  } catch(e) {
+    showAlert(errEl, T[lang].resetErr);
+  } finally {
+    btn.textContent = T[lang].resetBtn;
+    document.getElementById('reset-btn').disabled = false;
+  }
+};
+
+window.logout = async function() {
+  await signOut(auth);
+  currentUser = null; apiKey = null; schema = null; chatHistory = [];
+  document.getElementById('auth-section').style.display = 'block';
+  document.getElementById('app-section').style.display = 'none';
+  document.getElementById('user-info').style.display = 'none';
+  document.getElementById('schema-box').style.display = 'none';
+  document.getElementById('chat-box').style.display = 'none';
+  document.getElementById('chat-input-row').style.display = 'none';
+  document.getElementById('chat-box').innerHTML = '';
+};
+
+async function loadApiKey() {
+  const snap = await get(ref(db, 'utenti/' + currentUser.uid + '/api_key'));
+  apiKey = snap.val();
+  document.getElementById('auth-section').style.display = 'none';
+  document.getElementById('app-section').style.display = 'block';
+  document.getElementById('user-info').style.display = 'block';
+  document.getElementById('user-email').textContent = '👤 ' + currentUser.email;
+}
+
+window.createSchema = async function() {
+  const topic = document.getElementById('topic-input').value;
+  if (!topic) return;
+  const btn = document.getElementById('schema-btn-text');
+  btn.innerHTML = '<span class="spinner"></span>' + T[lang].loading;
+  document.getElementById('schema-btn').disabled = true;
+  try {
+    const res = await fetch('/api/schema', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic, api_key: apiKey, lang })
+    });
+    const data = await res.json();
+    schema = data.result;
+    chatHistory = [];
+    document.getElementById('chat-box').innerHTML = '';
+    document.getElementById('schema-content').textContent = schema;
+    document.getElementById('schema-box').style.display = 'block';
+    document.getElementById('chat-box').style.display = 'flex';
+    document.getElementById('chat-input-row').style.display = 'flex';
+  } catch(e) { console.error(e); }
+  finally {
+    btn.textContent = T[lang].schemaBtn;
+    document.getElementById('schema-btn').disabled = false;
+  }
+};
+
+window.sendMessage = async function() {
+  const input = document.getElementById('chat-input');
+  const question = input.value.trim();
+  if (!question || !schema) return;
+  input.value = '';
+  const chatBox = document.getElementById('chat-box');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg user';
+  userMsg.textContent = question;
+  chatBox.appendChild(userMsg);
+  chatHistory.push({ role: 'user', content: question });
+  const btn = document.getElementById('chat-btn-text');
+  btn.innerHTML = '<span class="spinner"></span>';
+  document.getElementById('chat-btn').disabled = true;
+  try {
+    const res = await fetch('/api/tutor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, schema, history: chatHistory.slice(0, -1), api_key: apiKey, lang })
+    });
+    const data = await res.json();
+    const reply = data.result;
+    chatHistory.push({ role: 'assistant', content: reply });
+    const assistantMsg = document.createElement('div');
+    assistantMsg.className = 'msg assistant';
+    assistantMsg.textContent = reply;
+    chatBox.appendChild(assistantMsg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  } catch(e) { console.error(e); }
+  finally {
+    btn.textContent = T[lang].sendBtn;
+    document.getElementById('chat-btn').disabled = false;
+  }
+};
+
+function showAlert(el, msg, isSuccess = false) {
+  el.textContent = msg;
+  el.className = 'alert ' + (isSuccess ? 'success' : 'error') + ' show';
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    await loadApiKey();
+  }
+});
+</script>
+</body>
+</html>
