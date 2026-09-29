@@ -1,6 +1,0 @@
-streamlit
-anthropic
-openai
-groq
-pyrebase4
-requests
