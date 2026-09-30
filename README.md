@@ -2,15 +2,15 @@
 
 <img width="259" height="226" alt="SchoolHelper-removebg-preview" src="https://github.com/user-attachments/assets/4978d376-a4b4-4e19-bfdd-7f69120532bb" />
 
-Student Helper
+---
 
 # Student Helper
 
-Student Helper is a web app built by a dyslexic student, for dyslexic students and everyone else.
+I'm dyslexic, and I made this web app for other dyslexic students (and anyone else who wants to use it).
 
-The idea is simple: instead of giving you the answer, it guides you to find it yourself. You pick a topic, get a clear and structured summary, then ask questions. The tutor responds with hints and guiding questions, never with direct solutions.
+Basically it won't give you the answer. You choose a topic, you get a short summary that's easy to read, and then you can ask questions. The tutor answers with hints and questions to make you think. Never the solution.
 
-Designed with readability in mind, large text, short bullet points, clean layout, so it works well for everyone, especially students with dyslexia.
+I kept the design simple on purpose: big text, short bullet points, nothing cluttered. Reading long walls of text is a pain for me, so I built it the way I'd want it.
 
 ---
 
@@ -18,65 +18,68 @@ Designed with readability in mind, large text, short bullet points, clean layout
 
 https://student-helper-rouge-five.vercel.app/
 
-No installation needed, just open the link and create an account.
+Nothing to install. Open the link, make an account, done.
 
 ---
 
 ## Features
 
-1. Generates clear, structured topic summaries
-2. Socratic tutor that guides your thinking and never gives the answer away
-3. Firebase authentication so you sign up once and your API key is saved securely
-4. Password reset via email
-5. Available in Italian and English
-6. Supports Anthropic, OpenAI and Groq APIs
+1. Structured topic summaries that are easy to read
+2. A Socratic tutor that guides you and never gives the answer away
+3. Login with Firebase, so you sign up once and your API key is saved securely
+4. Password reset by email
+5. Italian and English
+6. Works with Anthropic, OpenAI and Groq APIs
+7. Designed by a dyslexic for dyslexics
 
 ---
 
 ## Run it locally
 
-1. Clone the repository
-2. Install dependencies:
+1. Clone the repo
+2. Install what you need:
 ```
 pip install flask anthropic openai groq
 ```
-3. Run the app:
+3. Start it:
 ```
 flask --app api/index.py run
 ```
-4. Open your browser at http://localhost:5000
+4. Go to http://localhost:5000
 
 ---
 
-## Bug Reports
+## Bug reports
 
-Found a bug? Open an issue on GitHub using the Issues tab at the top of this page.
+Found a bug? Open an issue from the Issues tab up there.
 
-When reporting a bug, try to include:
+If you can, tell me:
 
-1. What you were doing when it happened
-2. What you expected to happen
-3. What actually happened
-4. Your browser and operating system if relevant
+1. What you were doing
+2. What you thought would happen
+3. What happened instead
+4. Browser and OS, if you think it matters
 
-The more detail you give, the faster it gets fixed. All reports are welcome, no bug is too small.
-
----
-
-## Note
-
-If when logging in you get an error saying the email or password are wrong but you are sure they are correct, just click the login button one more time. The free database sometimes takes a moment to respond on the first attempt.
+The more you tell me, the quicker I can fix it. Even tiny bugs are fine, I want to know about them.
 
 ---
 
-## IEP Integration
+## Login problem
 
-Since the app never gives direct answers but only guides the student through reasoning, it can be used as a compensatory or dispensatory tool depending on the national regulations, the specific rules of your school, or the student's IEP (Individualized Education Program), which is the personalized plan given to students with learning disabilities like dyslexia. It helps students work independently without replacing the learning process.
+Sometimes you'll see "wrong email or password" even though they're right. Just click login again. The free database is slow to wake up the first time.
+
+---
+
+## IEP
+
+Since the app only guides you and never solves things for you, it can be used as a compensatory or dispensatory tool. It depends on your country's laws, your school's rules and your IEP (Individualized Education Program, the personal plan students with learning disabilities like dyslexia get). You still do the thinking, the app just helps you get there.
 
 ---
 
 ## About
 
-Built by a dyslexic student who wanted a tool that actually works the way dyslexic brains do.
+I'm a dyslexic student and I wanted a tool that actually fits how my brain works, so I made one.
 
-If you have ideas, suggestions or just want to say hi, feel free to open an issue.
+Got ideas or feedback? Or just want to say hi? Open an issue. 
+Thanks, bye❤️
+
